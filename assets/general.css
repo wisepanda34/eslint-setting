@@ -1,0 +1,24 @@
+.description-image img {
+  max-width: 100%;
+}
+.description-copy {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.row {
+  display: inline-block;
+  font-size: 20px;
+  background: #444444;
+  color: aliceblue;
+  padding: 5px 10px;
+}
+.copy {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  background-image: url('/svg/copy.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}

@@ -3,6 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   ssr: false,
+  typescript: {
+    typeCheck: false,
+    strict: false,
+  },
   app: {
     head: {
       charset: 'utf-8',

@@ -11,6 +11,10 @@ export const links = [
     text: 'Установка и настройка Prettier',
     href: 'https://prettier.io/docs/en/install',
   },
+  {
+    text: 'Настройка парсера vite, для помощи typescript-parser',
+    href: 'https://eslint.vuejs.org/user-guide/',
+  },
 ]
 export const eslintConfigFile = `
     // @ts-check
@@ -31,9 +35,10 @@ export const eslintConfigFile = `
                 singleQuote: true,
                 semi: false,
                 tabWidth: 2,
-                trailingComma: 'es5',
+                trailingComma: 'none',
                 bracketSpacing: true,
-                jsxBracketSameLine: false,
+                bracketSameLine: false, 
+                endOfLine: 'crlf',
               },
             ],
             'vue/multi-word-component-names': 'off',
@@ -55,14 +60,63 @@ export const eslintConfigFile = `
         }
       ).prepend()
   `
+export const eslintConfigFileTS = `
+  // @ts-check
+import withNuxt from './.nuxt/eslint.config.mjs'
+import tsParser from '@typescript-eslint/parser'
+import vueParser from 'vue-eslint-parser'
+import eslintPluginPrettier from 'eslint-plugin-prettier'
+import eslintConfigPrettier from 'eslint-config-prettier'
+
+export default withNuxt(
+  // @ts-ignore
+  {
+    files: ['**/*.{js,ts,vue}'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        parser: tsParser,
+      },
+    },
+    plugins: {
+      prettier: eslintPluginPrettier,
+    },
+    rules: {
+      'max-len': ['error', { code: 120 }],
+      'prettier/prettier': [
+        'error',
+        {
+          singleQuote: true,
+          semi: false,
+          tabWidth: 2,
+          trailingComma: 'none',
+          bracketSpacing: true,
+          bracketSameLine: false,
+          endOfLine: 'crlf',
+        },
+      ],
+      '@typescript-eslint/no-unused-vars': 'error',
+      'vue/multi-word-component-names': 'off',
+      // Включаем правила конфигурации Prettier для устранения конфликтов
+      ...eslintConfigPrettier.rules,
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: true,
+    },
+  }
+).prepend()
+`
 export const prettierConfigFile = `
     module.exports = {
     singleQuote: true, // Использовать одинарные кавычки
     semi: false, // Отключить точку с запятой в конце строки
     tabWidth: 2, // Ширина табуляции
-    trailingComma: 'es5', // Запятая в последнем элементе объекта/массива
+    trailingComma: 'none', // Запятая в последнем элементе объекта/массива
     bracketSpacing: true, // Пробелы между скобками
-    bracketSameLine: false, // Закрывающая скобка JSX на новой строке
+    bracketSameLine: false, // Закрывающая скобка на новой строке
+    endOfLine: 'crlf',
   }
 `
 export const settingsJsonFile = `
@@ -124,4 +178,25 @@ export const scripts = `
   "prettier": "prettier --write .",
   "prettier:check": "prettier --check .",
   "fix": "eslint . --fix && prettier --write .",
+`
+export const nuxtConfigFile = `
+  modules: ['@nuxt/eslint'],
+`
+export const nuxtConfigFileTS = `
+  typescript: {
+    typeCheck: true,
+    strict: false,
+  },
+  modules: ['@nuxt/eslint'],
+  eslint: {
+    checker: true,
+  },
+`
+export const viteConfigFileTS = `
+  import { defineConfig } from 'vite'
+  import eslintPlugin from 'vite-plugin-eslint2'
+
+  export default defineConfig({
+    plugins: [eslintPlugin()]
+  })
 `
